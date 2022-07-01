@@ -4,13 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,14 +25,53 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp() {
+    var shouldShowOnboarding by remember { mutableStateOf(true) }
+
+    //최초
+    if (shouldShowOnboarding) {
+        OnboardingScreen { shouldShowOnboarding = false }
+    } else {
+        GreetingScreen()
+    }
+}
+
+@Composable
+fun OnboardingScreen(onNextClicked : () -> Unit) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp),
+            .fillMaxHeight(),
+        color = MaterialTheme.colors.background
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text("Welcome to OnbardingScreen!")
+            Button(
+                //클릭 이벤트를 상위로 넘긴다.
+                onClick = onNextClicked
+            ) {
+                Text("Next Screen")
+            }
+        }
+
+
+    }
+}
+
+@Composable
+fun GreetingScreen() {
+
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
         color = MaterialTheme.colors.background,
     ) {
         Column(
-            modifier = Modifier,
+            modifier = Modifier
+                .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top,
         ) {
@@ -50,6 +84,7 @@ fun MyApp() {
             Greeting("Android")
         }
     }
+
 }
 
 @Composable
@@ -105,8 +140,16 @@ fun Greeting(name : String) {
 
 @Preview(showBackground = true, widthDp = 320, heightDp = 640)
 @Composable
-fun DefaultPreview() {
+fun MyAppPreview() {
     BasicsCodelabTheme {
         MyApp()
+    }
+}
+
+@Preview(showBackground = true, widthDp = 320, heightDp = 640)
+@Composable
+fun DefaultPreview() {
+    BasicsCodelabTheme {
+        OnboardingScreen{}
     }
 }
