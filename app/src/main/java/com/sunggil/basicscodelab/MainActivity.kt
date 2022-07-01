@@ -3,6 +3,7 @@ package com.sunggil.basicscodelab
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -64,7 +65,7 @@ fun OnboardingScreen(onNextClicked : () -> Unit) {
 }
 
 @Composable
-fun GreetingScreen(datas : List<String> = List(1000) { "$it" } ) {
+fun GreetingScreen(datas : List<String> = List(1000) { "$it" }) {
 
     Surface(
         modifier = Modifier
@@ -90,7 +91,9 @@ fun GreetingScreen(datas : List<String> = List(1000) { "$it" } ) {
 fun Greeting(name : String) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     //추가 하단영역
-    val extraPadding = if (isExpanded) 48.dp else 0.dp
+    val extraPadding by animateDpAsState(
+        if (isExpanded) 48.dp else 0.dp
+    )
 
     Surface(
         modifier = Modifier
@@ -150,6 +153,6 @@ fun MyAppPreview() {
 @Composable
 fun DefaultPreview() {
     BasicsCodelabTheme {
-        OnboardingScreen{}
+        OnboardingScreen {}
     }
 }
