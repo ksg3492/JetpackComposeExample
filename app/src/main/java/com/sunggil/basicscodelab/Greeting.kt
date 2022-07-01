@@ -1,5 +1,6 @@
 package com.sunggil.basicscodelab
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
@@ -15,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import com.sunggil.basicscodelab.ui.component.ArrowIconButton
 
@@ -45,12 +45,15 @@ fun Greeting(name : String) {
             Column(
                 modifier = Modifier
                     .padding(24.dp)
+                    .animateContentSize(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioMediumBouncy,
+                            stiffness = Spring.StiffnessLow,
+                        )
+                    )
             ) {
 
-                Row(
-                    //padding 음수가 될 수 없음.
-                    modifier = Modifier.padding(bottom = extraPadding.coerceAtLeast(0.dp))
-                ) {
+                Row {
                     Column(
                         modifier = Modifier.weight(1f)
                     ) {
@@ -71,17 +74,19 @@ fun Greeting(name : String) {
                     }
                 }
 
-                //            Column(
-                //                modifier = Modifier
-                //                    .fillMaxWidth()
-                //                    .wrapContentHeight(),
-                //
-                //            ) {
-                //                Text(
-                //                    text = "child ",
-                //                    modifier = Modifier.padding(vertical = 24.dp)
-                //                )
-                //            }
+                if (isExpanded) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+
+                        ) {
+                        Text(
+                            text = "child ",
+                            modifier = Modifier.padding(vertical = 24.dp)
+                        )
+                    }
+                }
             }
         }
     }
