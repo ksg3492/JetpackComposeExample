@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -87,9 +88,9 @@ fun GreetingScreen(datas : List<String> = List(1000) { "$it" } ) {
 
 @Composable
 fun Greeting(name : String) {
-    val isExpanded = remember { mutableStateOf(false) }
+    var isExpanded by rememberSaveable { mutableStateOf(false) }
     //추가 하단영역
-    val extraPadding = if (isExpanded.value) 48.dp else 0.dp
+    val extraPadding = if (isExpanded) 48.dp else 0.dp
 
     Surface(
         modifier = Modifier
@@ -116,9 +117,9 @@ fun Greeting(name : String) {
                     modifier = Modifier
                         .wrapContentWidth()
                         .wrapContentSize(),
-                    onClick = { isExpanded.value = !isExpanded.value },
+                    onClick = { isExpanded = !isExpanded },
                 ) {
-                    Text(if (isExpanded.value) "Show Less" else "Show More")
+                    Text(if (isExpanded) "Show Less" else "Show More")
                 }
             }
 
