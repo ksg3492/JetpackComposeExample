@@ -3,7 +3,9 @@ package com.sunggil.basicscodelab
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,6 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import com.sunggil.basicscodelab.ui.theme.BasicsCodelabTheme
 
@@ -92,7 +95,11 @@ fun Greeting(name : String) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
     //추가 하단영역
     val extraPadding by animateDpAsState(
-        if (isExpanded) 48.dp else 0.dp
+        if (isExpanded) 48.dp else 0.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        )
     )
 
     Surface(
@@ -107,7 +114,8 @@ fun Greeting(name : String) {
         ) {
 
             Row(
-                modifier = Modifier.padding(bottom = extraPadding)
+                //padding 음수가 될 수 없음.
+                modifier = Modifier.padding(bottom = extraPadding.coerceAtLeast(0.dp))
             ) {
                 Column(
                     modifier = Modifier.weight(1f)
