@@ -3,19 +3,18 @@ package com.sunggil.basicscodelab
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
 import com.sunggil.basicscodelab.ui.theme.BasicsCodelabTheme
 
@@ -54,7 +53,12 @@ fun OnboardingScreen(onNextClicked : () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("Welcome to OnbardingScreen!")
+            Text(
+                text = "Welcome to OnbardingScreen!",
+                style = MaterialTheme.typography.h6.copy(
+                    fontWeight = FontWeight.Bold
+                )
+            )
             Button(
                 //클릭 이벤트를 상위로 넘긴다.
                 onClick = onNextClicked
@@ -90,77 +94,18 @@ fun GreetingScreen(datas : List<String> = List(1000) { "$it" }) {
 
 }
 
-@Composable
-fun Greeting(name : String) {
-    var isExpanded by rememberSaveable { mutableStateOf(false) }
-    //추가 하단영역
-    val extraPadding by animateDpAsState(
-        if (isExpanded) 48.dp else 0.dp,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        )
-    )
-
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(vertical = 5.dp),
-        color = MaterialTheme.colors.primary,
-    ) {
-        Column(
-            modifier = Modifier.padding(24.dp)
-        ) {
-
-            Row(
-                //padding 음수가 될 수 없음.
-                modifier = Modifier.padding(bottom = extraPadding.coerceAtLeast(0.dp))
-            ) {
-                Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(text = "Hello,")
-                    Text(text = "$name!")
-                }
-
-                OutlinedButton(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .wrapContentSize(),
-                    onClick = { isExpanded = !isExpanded },
-                ) {
-                    Text(if (isExpanded) "Show Less" else "Show More")
-                }
-            }
-
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .wrapContentHeight(),
-//
-//            ) {
-//                Text(
-//                    text = "child ",
-//                    modifier = Modifier.padding(vertical = 24.dp)
-//                )
-//            }
-        }
-    }
-}
-
 @Preview(showBackground = true, widthDp = 320, heightDp = 640)
 @Composable
-fun MyAppPreview() {
-    BasicsCodelabTheme {
-        MyApp()
-    }
-}
-
-@Preview(showBackground = true, widthDp = 320, heightDp = 640)
-@Composable
-fun DefaultPreview() {
+fun OnboardingScreenPreview() {
     BasicsCodelabTheme {
         OnboardingScreen {}
+    }
+}
+
+@Preview(showBackground = true, widthDp = 320, heightDp = 640)
+@Composable
+fun GreetingScreenPreview() {
+    BasicsCodelabTheme {
+        GreetingScreen()
     }
 }
